@@ -15,6 +15,7 @@ Pod::Spec.new do |s|
   s.source_files  = "ios/**/*.{h,m}"
   s.dependency "React-Core"
   s.vendored_libraries = "ios/libWeiboSDK/libWeiboSDK.a"
+  s.resource = 'ios/libWeiboSDK/WeiboSDK.bundle'
   s.requires_arc = true
   s.frameworks = 'SystemConfiguration','CoreTelephony','WebKit'
   s.library = 'sqlite3','c++','z'

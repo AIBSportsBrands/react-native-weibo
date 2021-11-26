@@ -1,6 +1,6 @@
 {
-  "name": "rn-weibo-go",
-  "version": "3.0.9",
+  "name": "rn-weibo-more",
+  "version": "1.0.0",
   "description": "新浪微博登录和分享模块",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yuanshan/react-native-weibo.git"
+    "url": "git+https://github.com/AIBSportsBrands/react-native-weibo-more.git"
   },
   "keywords": [
     "react-native",
@@ -22,9 +22,9 @@
   "author": "yuanshan",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/yuanshan/react-native-weiboissues"
+    "url": "https://github.com/yuanshan/react-native-weibo-moreissues"
   },
-  "homepage": "https://github.com/yuanshan/react-native-weibo#readme",
+  "homepage": "https://github.com/yuanshan/react-native-weibo-more#readme",
   "dependencies": {
   }
 }
