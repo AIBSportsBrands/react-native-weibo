@@ -125,10 +125,8 @@ RCT_EXPORT_METHOD(shareToWeibo:(NSDictionary *)aData
         NSURL *url = [RCTConvert NSURL:imageUrl];
         NSData *data = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:url] returningResponse:NULL error:NULL];
         if (!data) {
-            NSLog(@"weibo download data fail");
             [self _shareWithData:aData image:nil];
         } else {
-            NSLog(@"weibo download data success");
             UIImage *originImage = [UIImage imageWithData: data];
             [self _shareWithData:aData image:originImage];
         }
@@ -212,7 +210,6 @@ RCT_EXPORT_METHOD(shareToWeibo:(NSDictionary *)aData
     if (gRegister) {
         return;
     }
-    [WeiboSDK enableDebugMode:YES];
     NSArray *list = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"CFBundleURLTypes"];
     for (NSDictionary *item in list) {
         NSString *name = item[@"CFBundleURLName"];
@@ -273,15 +270,12 @@ RCT_EXPORT_METHOD(shareToWeibo:(NSDictionary *)aData
     NSString *text = aData[RCTWBShareText];
     message.text = text;
     
-    NSLog(@"weibo share message.text:%@", message.text);
     
     NSString *type = aData[RCTWBShareType];
     if ([type isEqualToString:RCTWBShareTypeText]) {
-        NSLog(@"weibo RCTWBShareTypeText");
     }
     else if ([type isEqualToString:RCTWBShareTypeImage]) {
         //        大小不能超过10M
-        NSLog(@"weibo RCTWBShareTypeImage");
         WBImageObject *imageObject = [WBImageObject new];
         if (aImage) {
             imageObject.imageData = UIImageJPEGRepresentation(aImage, 0.7);
@@ -290,29 +284,24 @@ RCT_EXPORT_METHOD(shareToWeibo:(NSDictionary *)aData
     }
     else {
         if ([type isEqualToString:RCTWBShareTypeVideo]) {
-            NSLog(@"weibo RCTWBShareTypeVideo");
             WBNewVideoObject *videoObject = [WBNewVideoObject new];
             NSURL *videoUrl = aData[RCTWBShareWebpageUrl];
             [videoObject addVideo:videoUrl];
             message.videoObject = videoObject;
         }
         else {
-            NSLog(@"weibo WBWebpageObject");
             WBWebpageObject *webpageObject = [WBWebpageObject new];
             webpageObject.webpageUrl = aData[RCTWBShareWebpageUrl];
             message.mediaObject = webpageObject;
         }
         message.mediaObject.objectID = [NSDate date].description;
         message.mediaObject.description = aData[RCTWBShareDescription];
-        NSLog(@"weibo share message.mediaObject.description:%@", message.mediaObject.description);
         message.mediaObject.title = aData[RCTWBShareTitle];
-        NSLog(@"weibo share message.mediaObject.title:%@", message.mediaObject.title);
         if (aImage) {
             //            @warning 大小小于32k
             message.mediaObject.thumbnailData = UIImageJPEGRepresentation(aImage, 0.7);
         }
     }
-    NSLog(@"weibo share msg:%@", message);
     
     WBAuthorizeRequest *authRequest = [self _genAuthRequest:aData];
     NSString *accessToken = aData[RCTWBShareAccessToken];

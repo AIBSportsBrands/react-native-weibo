@@ -99,7 +99,6 @@ public class WeiboModule extends ReactContextBaseJavaModule implements ActivityE
 
     @Override
     public void initialize() {
-        Log.d(">>>weibo", "init");
         super.initialize();
         gModule = this;
         getReactApplicationContext().addActivityEventListener(this);
@@ -125,7 +124,6 @@ public class WeiboModule extends ReactContextBaseJavaModule implements ActivityE
 
     private void _installWbSdk(final ReadableMap config) {
         if (!wbSdkInstalled) {
-            Log.d(">>>weibo", "_installWbSdk");
             AuthInfo sinaAuthInfo = this._genAuthInfo(config);
             mWBAPI = WBAPIFactory.createWBAPI(getReactApplicationContext());
             mWBAPI.registerApp(getReactApplicationContext(), sinaAuthInfo, new SdkListener() {
@@ -188,7 +186,6 @@ public class WeiboModule extends ReactContextBaseJavaModule implements ActivityE
         this._installWbSdk(data);
         if (data.hasKey(RCTWBShareImageUrl)) {
             String imageUrl = data.getString(RCTWBShareImageUrl);
-            Log.d(">>>weibo", "shareToWeibo imageUrl: "+ imageUrl);
             if (imageUrl == null || imageUrl.isEmpty()) {
                 this._share(data, null);
             } else {
@@ -265,7 +262,6 @@ public class WeiboModule extends ReactContextBaseJavaModule implements ActivityE
         else if (type.equals(RCTWBShareTypeImage)) {
             ImageObject imageObject = new ImageObject();
             if (bitmap != null) {
-                Log.e("share","hasBitmap");
                 imageObject.setImageData(bitmap);
             }
             weiboMessage.imageObject = imageObject;
@@ -296,7 +292,6 @@ public class WeiboModule extends ReactContextBaseJavaModule implements ActivityE
     }
     @Override
     public void onComplete() {
-        Log.d(">>>weibo", "onComplete");
         WritableMap event = Arguments.createMap();
         event.putString("type", "WBSendMessageToWeiboResponse");
         event.putInt("errCode", 0);
@@ -306,9 +301,6 @@ public class WeiboModule extends ReactContextBaseJavaModule implements ActivityE
 
     @Override
     public void onError(UiError error) {
-        Log.d(">>>weibo", "onError" + error.errorMessage);
-        Log.d(">>>weibo", "onError" + error.errorDetail);
-        Log.d(">>>weibo", "onError" + error.errorCode);
         WritableMap map = Arguments.createMap();
         map.putInt("errCode", -1);
         map.putString("errMsg", "分享失败");
@@ -320,7 +312,6 @@ public class WeiboModule extends ReactContextBaseJavaModule implements ActivityE
 
     @Override
     public void onCancel() {
-        Log.d(">>>weibo", "onCancel");
         WritableMap map = Arguments.createMap();
         map.putInt("errCode", -1);
         map.putString("errMsg", "分享取消");
@@ -335,19 +326,12 @@ public class WeiboModule extends ReactContextBaseJavaModule implements ActivityE
         String redirectURI = "";
         if (config.hasKey("redirectURI")) {
             redirectURI = config.getString("redirectURI");
-            Log.d(">>>weibo", "_genAuthInfo redirectURI: " + redirectURI);
-        } else {
-            redirectURI = "https://api.weibo.com/oauth2/default.html";
         }
 
         String scope = "";
         if (config.hasKey("scope")) {
             scope = config.getString("scope");
-            Log.d(">>>weibo", "_genAuthInfo scope:" + scope);
-        } else {
-            scope = "all";
         }
-
         final AuthInfo sinaAuthInfo = new AuthInfo(getReactApplicationContext(), this.appId, redirectURI, scope);
         return sinaAuthInfo;
     }
